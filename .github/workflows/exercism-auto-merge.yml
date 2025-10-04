@@ -1,0 +1,21 @@
+name: Auto merge Exercism PRs
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  auto-merge:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check PR author
+        if: github.event.pull_request.user.login == 'exercism-solutions-syncer'
+        run: echo "Pull request created by Exercism Syncer — ready to merge."
+
+      - name: Auto merge PR
+        if: github.event.pull_request.user.login == 'exercism-solutions-syncer'
+        uses: pascalgn/automerge-action@v0.15.6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MERGE_METHOD: squash
