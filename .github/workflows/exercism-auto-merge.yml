@@ -7,15 +7,19 @@ on:
 jobs:
   auto-merge:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
 
     steps:
       - name: Check PR author
-        if: github.event.pull_request.user.login == 'exercism-solutions-syncer'
-        run: echo "Pull request created by Exercism Syncer — ready to merge."
+        if: github.event.pull_request.user.login == 'exercism-solutions-syncer[bot]'
+        run: echo "PR creato da exercism-solutions-syncer[bot] — procedo al merge."
 
       - name: Auto merge PR
-        if: github.event.pull_request.user.login == 'exercism-solutions-syncer'
+        if: github.event.pull_request.user.login == 'exercism-solutions-syncer[bot]'
         uses: pascalgn/automerge-action@v0.15.6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MERGE_METHOD: squash
+          LOG_LEVEL: debug
