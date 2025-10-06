@@ -16,9 +16,10 @@ jobs:
         if: github.event.pull_request.user.login == 'exercism-solutions-syncer[bot]'
         run: echo "PR creato da exercism-solutions-syncer[bot] — procedo al merge."
 
-      - name: Auto merge PR
+      - id: automerge
+        name: Auto merge PR
         if: github.event.pull_request.user.login == 'exercism-solutions-syncer[bot]'
-        uses: pascalgn/automerge-action@v0.15.6
+        uses: pascalgn/automerge-action@v0.16.4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MERGE_METHOD: squash
