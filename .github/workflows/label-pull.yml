@@ -1,0 +1,17 @@
+name: Add automerge label to exercism-solutions-syncer bot PRs
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  add-label:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check PR author and add label
+        uses: actions-ecosystem/action-add-labels@v1
+        if: github.actor == 'exercism-solutions-syncer[bot]'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: automerge
