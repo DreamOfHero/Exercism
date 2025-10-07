@@ -1,16 +1,26 @@
-name: Auto merge Exercism PRs
+name: Exercism Sync and Automerge
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, reopened, synchronize]
 
 jobs:
+  add-label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR author and add label
+        uses: actions-ecosystem/action-add-labels@v1
+        if: github.actor == 'exercism-solutions-syncer[bot]'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: automerge
+
   auto-merge:
     runs-on: ubuntu-latest
+    needs: add-label
     permissions:
       contents: write
       pull-requests: write
-
     steps:
       - name: Check PR author
         if: github.event.pull_request.user.login == 'exercism-solutions-syncer[bot]'
